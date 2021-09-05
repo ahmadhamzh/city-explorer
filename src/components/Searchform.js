@@ -33,7 +33,7 @@ class Searchform extends React.Component {
 
 
     return (
-      <div>
+      <div className='form'>
         <Form onSubmit={this.handelSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>enter city name</Form.Label>
