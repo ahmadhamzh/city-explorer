@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card {
+  margin: 20px;
+  width: 25%;
+  border: 5px black;
+}
+
+.card Card {
+  background-color: rgb(40, 41, 37);
+
+}
+
+.form {
+  width: 30%;
+  margin-left: 30%;
+}
