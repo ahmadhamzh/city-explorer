@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import Alert from 'react-bootstrap/Alert'
 import Searchform from './components/Searchform';
 import DisplayCardDate from './components/DisplayCardData';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,49 +10,76 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
 
-  constructor (props){
+  constructor(props) {
     super(props)
     this.state = {
-      cityName : '',
-      locationData : {}
+      cityName: '',
+      locationData: {},
+      showCardData: false,
+      messgeError: '',
+      showError: false
 
     }
 
   }
   getLocationData = async (city) => {
-    await this.setState({cityName : city
+    await this.setState({
+      cityName: city
     })
-    
-    console.log('cityname : '+this.state.cityName)
+    console.log('cityname : ' + this.state.cityName)
+
     this.getResponse()
   }
 
   getResponse = async () => {
-    const url = `https://eu1.locationiq.com/v1/search.php?key=pk.48d418fc1ff8d8e8eac08d65327e5dc1&q=${this.state.cityName}&format=json`
+    try {
 
-    const response = await axios.get(url)
+      const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
 
-    this.setState({locationData : response.data[0]})
+      const response = await axios.get(url)
+
+      this.setState({ locationData: response.data[0], showCardData: true })
+
+      console.log(this.state.locationData)
+      console.log(this.state.showCardData)
+    } catch (err) {
+
+      console.log('ssss');
+      this.setState({
+        showError: true,
+        messgeError: err.message
+      })
 
 
-    console.log(this.state.locationData)
 
-    
+    }
+
+
   }
   render() {
 
 
     return (
       <div>
-        <Searchform 
-        getLocationData = {this.getLocationData}
+        <Searchform
+          getLocationData={this.getLocationData}
         />
-        <DisplayCardDate
-        locationData = {this.state.locationData}
-        />       
+        {
+          this.state.showCardData &&
+          <DisplayCardDate
+            locationData={this.state.locationData}
+          />
+        }
+
+        {
+          this.state.showError &&
+          <Alert >
+          {this.state.messgeError}
+        </Alert>
+        }
 
         <div>
-          
+
         </div>
       </div>
 
