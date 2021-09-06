@@ -4,7 +4,14 @@ import Card from 'react-bootstrap/Card'
 class DisplayCardDate extends React.Component {
 
     render() {
-        return (
+
+        let weatherState = this.props.weatherData.data.map((element) => {
+            return <p>{element.date} : {element.description}</p>
+
+        }
+        )
+            
+    return (
 
             <div className='card'>
                 <Card style={{ width: '18rem' }}>
@@ -14,7 +21,9 @@ class DisplayCardDate extends React.Component {
                         <Card.Text>
                             <p>Latitude : {this.props.locationData.lat}</p>
                             <p>Longitude : {this.props.locationData.lon}</p>
-                        </Card.Text>                        
+                            <p>expected weather for next 3 days</p>
+                            {weatherState}
+                        </Card.Text>
                     </Card.Body>
                 </Card>
             </div>

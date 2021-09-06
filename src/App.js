@@ -15,6 +15,7 @@ class App extends Component {
     this.state = {
       cityName: '',
       locationData: {},
+      weatherData:[],
       showCardData: false,
       messgeError: '',
       showError: false
@@ -36,12 +37,18 @@ class App extends Component {
 
       const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
 
+      const srverUrl = `http://localhost:3001/weather?city_name=${this.state.cityName}&lon=${this.state.locationData.lon}.91&lat=${this.state.locationData.lat}`
+
+
       const response = await axios.get(url)
 
-      this.setState({ locationData: response.data[0], showCardData: true })
+      const serverResponse = await axios.get(srverUrl);
 
+
+      this.setState({ locationData: response.data[0], showCardData: true, weatherData : serverResponse})
+
+      console.log(this.state.weatherData.data)
       console.log(this.state.locationData)
-      console.log(this.state.showCardData)
     } catch (err) {
 
       console.log('ssss');
@@ -68,6 +75,7 @@ class App extends Component {
           this.state.showCardData &&
           <DisplayCardDate
             locationData={this.state.locationData}
+            weatherData = {this.state.weatherData}
           />
         }
 
