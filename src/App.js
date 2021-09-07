@@ -61,7 +61,8 @@ class App extends Component {
       console.log(this.state.weatherData)
       this.setState({
         showError: true,
-        messgeError: err.message
+        messgeError: err.message,
+        showCardData: false
       })
 
 
