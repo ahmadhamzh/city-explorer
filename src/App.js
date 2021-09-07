@@ -15,7 +15,7 @@ class App extends Component {
     this.state = {
       cityName: '',
       locationData: {},
-      weatherData:[],
+      weatherData: [],
       showCardData: false,
       messgeError: '',
       showError: false
@@ -26,8 +26,10 @@ class App extends Component {
   getLocationData = async (city) => {
     await this.setState({
       cityName: city
+
     })
     console.log('cityname : ' + this.state.cityName)
+    console.log('location data : ' + this.state.weatherData)
 
     this.getResponse()
   }
@@ -35,23 +37,28 @@ class App extends Component {
   getResponse = async () => {
     try {
 
-      const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
+    const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
 
-      const srverUrl = `http://localhost:3001/weather?city_name=${this.state.cityName}&lon=${this.state.locationData.lon}.91&lat=${this.state.locationData.lat}`
+    const response = await axios.get(url)
+
+    await this.setState({ locationData: response.data[0], showCardData: true, showError: false, })
+
+    const srverUrl = `http://localhost:3001/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
 
 
-      const response = await axios.get(url)
 
-      const serverResponse = await axios.get(srverUrl);
+    const serverResponse = await axios.get(srverUrl);
+
+    await this.setState({ weatherData: serverResponse.data })
 
 
-      this.setState({ locationData: response.data[0], showCardData: true, weatherData : serverResponse})
-
-      console.log(this.state.weatherData.data)
-      console.log(this.state.locationData)
+    console.log('get Response');
+    console.log(this.state.weatherData.data)
+    console.log(this.state.locationData)
     } catch (err) {
 
       console.log('ssss');
+      console.log(this.state.weatherData)
       this.setState({
         showError: true,
         messgeError: err.message
@@ -75,15 +82,15 @@ class App extends Component {
           this.state.showCardData &&
           <DisplayCardDate
             locationData={this.state.locationData}
-            weatherData = {this.state.weatherData}
+            weatherData={this.state.weatherData}
           />
         }
 
         {
           this.state.showError &&
           <Alert >
-          {this.state.messgeError}
-        </Alert>
+            {this.state.messgeError}
+          </Alert>
         }
 
         <div>
