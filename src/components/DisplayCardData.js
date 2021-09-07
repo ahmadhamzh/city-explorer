@@ -5,13 +5,15 @@ class DisplayCardDate extends React.Component {
 
     render() {
 
-        let weatherState = this.props.weatherData.data.map((element) => {
-            return <p>{element.date} : {element.description}</p>
+        let weatherDataData = this.props.weatherData
 
+        let weatherState = weatherDataData.map((element) => {
+            return <p>{element.date} : {element.description}</p>
         }
         )
-            
-    return (
+        console.log(this.props)
+
+        return (
 
             <div className='card'>
                 <Card style={{ width: '18rem' }}>
@@ -22,7 +24,8 @@ class DisplayCardDate extends React.Component {
                             <p>Latitude : {this.props.locationData.lat}</p>
                             <p>Longitude : {this.props.locationData.lon}</p>
                             <p>expected weather for next 3 days</p>
-                            {weatherState}
+                           
+                             {weatherState}
                         </Card.Text>
                     </Card.Body>
                 </Card>
