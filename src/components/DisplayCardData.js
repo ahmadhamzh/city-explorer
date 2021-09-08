@@ -4,15 +4,11 @@ import Card from 'react-bootstrap/Card'
 class DisplayCardDate extends React.Component {
 
     render() {
-
         let weatherDataData = this.props.weatherData
-
         let weatherState = weatherDataData.map((element) => {
             return <p>{element.date} : {element.description}</p>
         }
         )
-        console.log(this.props)
-
         return (
 
             <div className='card'>
@@ -30,11 +26,8 @@ class DisplayCardDate extends React.Component {
                     </Card.Body>
                 </Card>
             </div>
-
-
         )
     }
-
 }
 
 export default DisplayCardDate;
