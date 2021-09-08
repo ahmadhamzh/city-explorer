@@ -3,6 +3,7 @@ import axios from 'axios'
 import Alert from 'react-bootstrap/Alert'
 import Searchform from './components/Searchform';
 import DisplayCardDate from './components/DisplayCardData';
+import Movieslist from './components/Movieslist';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -17,8 +18,10 @@ class App extends Component {
       locationData: {},
       weatherData: [],
       showCardData: false,
+      showMoviesList: false,
       messgeError: '',
-      showError: false
+      showError: false,
+      moviesList: [],
 
     }
 
@@ -37,24 +40,25 @@ class App extends Component {
   getResponse = async () => {
     try {
 
-    const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
-
-    const response = await axios.get(url)
-
-    await this.setState({ locationData: response.data[0], showCardData: true, showError: false, })
-
-    const srverUrl = `http://localhost:3001/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
+      const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
+      const response = await axios.get(url)
+      await this.setState({ locationData: response.data[0], showCardData: true, showError: false, showMoviesList: true })
 
 
+      const srverUrl = `http://localhost:3001/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
+      const serverResponse = await axios.get(srverUrl);
+      await this.setState({ weatherData: serverResponse.data });
 
-    const serverResponse = await axios.get(srverUrl);
+      const serverMoviesUrl = `http://localhost:3001/moveis?query=${this.state.cityName}`;
+      const serverMoviesResponse = await axios.get(serverMoviesUrl)
+      await this.setState({ moviesList: serverMoviesResponse.data });
 
-    await this.setState({ weatherData: serverResponse.data })
+      console.log(this.state.moviesList);
 
 
-    console.log('get Response');
-    console.log(this.state.weatherData.data)
-    console.log(this.state.locationData)
+      console.log('get Response');
+      console.log(this.state.weatherData.data)
+      console.log(this.state.locationData)
     } catch (err) {
 
       console.log('ssss');
@@ -62,7 +66,8 @@ class App extends Component {
       this.setState({
         showError: true,
         messgeError: err.message,
-        showCardData: false
+        showCardData: false,
+        showMoviesList: false,
       })
 
 
@@ -79,24 +84,33 @@ class App extends Component {
         <Searchform
           getLocationData={this.getLocationData}
         />
-        {
-          this.state.showCardData &&
-          <DisplayCardDate
-            locationData={this.state.locationData}
-            weatherData={this.state.weatherData}
-          />
-        }
 
-        {
-          this.state.showError &&
-          <Alert >
-            {this.state.messgeError}
-          </Alert>
-        }
 
-        <div>
+        <div className='display'>
+          {
+            this.state.showCardData &&
+            <DisplayCardDate
+              locationData={this.state.locationData}
+              weatherData={this.state.weatherData}
+            />
+          }
+
+          {
+            this.state.showMoviesList &&
+            <Movieslist
+              moviesList={this.state.moviesList}
+            />
+          }
+
+          {
+            this.state.showError &&
+            <Alert >
+              {this.state.messgeError}
+            </Alert>
+          }
 
         </div>
+        
       </div>
 
     )
