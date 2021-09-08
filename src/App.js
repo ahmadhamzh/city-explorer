@@ -6,9 +6,6 @@ import DisplayCardDate from './components/DisplayCardData';
 import Movieslist from './components/Movieslist';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-
-
 class App extends Component {
 
   constructor(props) {
@@ -22,7 +19,6 @@ class App extends Component {
       messgeError: '',
       showError: false,
       moviesList: [],
-
     }
 
   }
@@ -31,8 +27,6 @@ class App extends Component {
       cityName: city
 
     })
-    console.log('cityname : ' + this.state.cityName)
-    console.log('location data : ' + this.state.weatherData)
 
     this.getResponse()
   }
@@ -52,39 +46,24 @@ class App extends Component {
       const serverMoviesUrl = `http://localhost:3001/moveis?query=${this.state.cityName}`;
       const serverMoviesResponse = await axios.get(serverMoviesUrl)
       await this.setState({ moviesList: serverMoviesResponse.data });
-
-      console.log(this.state.moviesList);
-
-
-      console.log('get Response');
-      console.log(this.state.weatherData.data)
-      console.log(this.state.locationData)
+      
     } catch (err) {
-
-      console.log('ssss');
-      console.log(this.state.weatherData)
       this.setState({
         showError: true,
         messgeError: err.message,
         showCardData: false,
         showMoviesList: false,
       })
-
-
-
     }
 
 
   }
   render() {
-
-
     return (
       <div>
         <Searchform
           getLocationData={this.getLocationData}
         />
-
 
         <div className='display'>
           {
@@ -110,12 +89,10 @@ class App extends Component {
           }
 
         </div>
-        
+
       </div>
 
     )
   }
-
-
 }
 export default App;

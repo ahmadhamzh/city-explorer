@@ -6,9 +6,7 @@ class Movieslist extends React.Component {
 
     render() {
 
-        let listOfMovies = this.props.moviesList
-
-        console.log(listOfMovies)
+        let listOfMovies = this.props.moviesList        
 
         return (
 
@@ -33,11 +31,8 @@ class Movieslist extends React.Component {
             </div>
                 )
             })
-
-
         )
     }
-
 }
 
 export default Movieslist;
