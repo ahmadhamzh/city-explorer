@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+.display {
+  display: inline-block;
+
+}
+
 .card {
   margin: 20px;
   width: 25%;
