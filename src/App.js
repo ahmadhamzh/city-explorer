@@ -39,11 +39,11 @@ class App extends Component {
       await this.setState({ locationData: response.data[0], showCardData: true, showError: false, showMoviesList: true })
 
 
-      const srverUrl = `http://localhost:3001/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
+      const srverUrl = `${process.env.REACT_APP_SERVER_URL}/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
       const serverResponse = await axios.get(srverUrl);
       await this.setState({ weatherData: serverResponse.data });
 
-      const serverMoviesUrl = `http://localhost:3001/moveis?query=${this.state.cityName}`;
+      const serverMoviesUrl = `${process.env.REACT_APP_SERVER_URL}/moveis?query=${this.state.cityName}`;
       const serverMoviesResponse = await axios.get(serverMoviesUrl)
       await this.setState({ moviesList: serverMoviesResponse.data });
       
