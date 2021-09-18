@@ -12,12 +12,9 @@ code {
     monospace;
 }
 
-.display {
-  display: inline-block;
-
-}
 
 .card {
+  display: inline-block;
   margin: 20px;
   width: 25%;
   border: 5px black;

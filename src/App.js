@@ -12,7 +12,7 @@ class App extends Component {
     super(props)
     this.state = {
       cityName: '',
-      locationData: {},
+      locationData: [],
       weatherData: [],
       showCardData: false,
       showMoviesList: false,
@@ -30,22 +30,30 @@ class App extends Component {
 
     this.getResponse()
   }
-
+  // https://api.edamam.com/api/recipes/v2?type=public&q=pasta&app_id=a2e340f9&app_key=76ad5cfe20a12f9e1aed43cb5ab1a364&field=label&field=image&field=dietLabels&field=ingredientLines&field=calories&field=mealType
   getResponse = async () => {
     try {
 
-      const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
+      const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${this.state.cityName}&app_id=a2e340f9&app_key=76ad5cfe20a12f9e1aed43cb5ab1a364&field=label&field=image&field=dietLabels&field=ingredientLines&field=calories&field=mealType&field=dishType`
+
+      // const url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.cityName}&format=json`
       const response = await axios.get(url)
-      await this.setState({ locationData: response.data[0], showCardData: true, showError: false, showMoviesList: true })
+      console.log(response.data.hits[0].recipe);
+      let responseArr = [];
+      for (let i = 0; i < 4 ; i++) {
+        responseArr.push(response.data.hits[i].recipe)
+        
+      }
+      await this.setState({ locationData: responseArr, showCardData: true, showError: false, showMoviesList: true })
 
 
-      const srverUrl = `${process.env.REACT_APP_SERVER_URL}/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
-      const serverResponse = await axios.get(srverUrl);
-      await this.setState({ weatherData: serverResponse.data });
+      // const srverUrl = `${process.env.REACT_APP_SERVER_URL}/weather?&lon=${this.state.locationData.lon}&lat=${this.state.locationData.lat}`
+      // const serverResponse = await axios.get(srverUrl);
+      // await this.setState({ weatherData: serverResponse.data });
 
-      const serverMoviesUrl = `${process.env.REACT_APP_SERVER_URL}/moveis?query=${this.state.cityName}`;
-      const serverMoviesResponse = await axios.get(serverMoviesUrl)
-      await this.setState({ moviesList: serverMoviesResponse.data });
+      // const serverMoviesUrl = `${process.env.REACT_APP_SERVER_URL}/moveis?query=${this.state.cityName}`;
+      // const serverMoviesResponse = await axios.get(serverMoviesUrl)
+      // await this.setState({ moviesList: serverMoviesResponse.data });
       
     } catch (err) {
       this.setState({

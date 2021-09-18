@@ -3,28 +3,48 @@ import Card from 'react-bootstrap/Card'
 
 class DisplayCardDate extends React.Component {
 
+    // renderIngrediants = (arr) =>{
+    //     let newArr = arr.map(element => {
+    //         return <p>{element}</p>
+    //     })
+    //     return newArr
+    // }
+
     render() {
-        let weatherDataData = this.props.weatherData
-        let weatherState = weatherDataData.map((element) => {
-            return <p>{element.date} : {element.description}</p>
-        }
-        )
+        let Ingrediants = this.props.locationData;
+        console.log(Ingrediants);
+
+
         return (
 
-            <div className='card'>
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&center=${this.props.locationData.lat},${this.props.locationData.lon}&zoom=18&markers=icon:large-red-cutout|${this.props.locationData.lat},${this.props.locationData.lon}`} />
-                    <Card.Body>
-                        <Card.Title>{this.props.locationData.display_name}</Card.Title>
-                        <Card.Text>
-                            <p>Latitude : {this.props.locationData.lat}</p>
-                            <p>Longitude : {this.props.locationData.lon}</p>
-                            <p>expected weather for next 3 days</p>
-                           
-                             {weatherState}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
+            <div style={{ display: 'inline-block' }} >
+                {
+                    Ingrediants.map(element => {
+                        return (
+
+                            <Card style={{ width: '18rem' }}>
+                                {<Card.Img variant="top" src={element.image} />}
+                                {<Card.Body>
+                                    <Card.Title>{element.label}</Card.Title>
+                                    <Card.Text>
+                                        <p>Ingrediants : </p>
+                                        {
+
+                                         element.ingredientLines.map((element) => {
+                                                  return <p>{element}</p>
+                                              }
+                                        )
+                                          }                                    
+                                        <p>Calories : {element.calories}</p>
+                                        <p>meal Type : {element.mealType}</p>
+                                        <p>dish Type : {element.dishType}</p>
+
+                                    </Card.Text>
+                                </Card.Body>}
+                            </Card>
+                        )
+                    })
+                }
             </div>
         )
     }
